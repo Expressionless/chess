@@ -4,7 +4,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Board {
-  
+   public final String[] COLUMN = {"A", "B", "C", "D", "E", "F", "G", "H"};
+   public final Color COL_WHITE = new Color(255, 230, 238);
+   
    public static final int TILE_SIZE = 64; // px
    
    public final static int TILE_COUNT_X = 8;
@@ -48,10 +50,19 @@ public class Board {
    }
    
    public void drawBoard() {
+     textSize(24);
      for(int row = 0; row < TILE_COUNT_Y; row++) {
+       fill(COL_WHITE.red, COL_WHITE.green, COL_WHITE.blue);
+       text(row, xOffset / 2, yOffset / 4 + (row + 1) * TILE_SIZE);
         for(int column = 0; column < TILE_COUNT_X; column++) {
            tiles[column][row].drawTile();
         }
+     }
+     
+     for(int column = 0; column < TILE_COUNT_X; column++) {
+        
+       fill(COL_WHITE.red, COL_WHITE.green, COL_WHITE.blue); 
+       text(COLUMN[column], (column + 1) * TILE_SIZE, TILE_SIZE * (TILE_COUNT_Y + 1) + yOffset / 4);
      }
      
      playerWhite.pieces.stream().forEach((piece) -> piece.drawPiece());     

@@ -73,7 +73,7 @@ public class MouseHandler {
   }
   
   public void render() {
-    fill(255, 0, 0);
+    fill(100, 100, 100, 100);
     ellipse(currentTile.screenPos.x + 32, currentTile.screenPos.y + 32, 24, 24);
      if(this.currentPiece != null) {
        currentPiece.validMoves.stream().forEach(move -> {

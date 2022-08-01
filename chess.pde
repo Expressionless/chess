@@ -22,6 +22,8 @@ void draw() {
   
   mouseHandler.render();
   
+  Color COL_WHITE = new Color(255, 230, 238);
+  fill(COL_WHITE.red, COL_WHITE.green, COL_WHITE.blue);
   textSize(32);
   text((board.currentPlayer.pieceColour == PieceColour.WHITE ? "White" : "Black") + " to move", 16, 32);
 }
