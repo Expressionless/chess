@@ -27,7 +27,7 @@ public class Player {
       this.addPiece(new Bishop(board, this, row, 2));
       this.addPiece(new Queen(board, this, row, 3));
       this.addPiece(new King(board, this, row, 4));
-      this.addPiece(new Knight(board, this, row, 5));
+      this.addPiece(new Bishop(board, this, row, 5));
       this.addPiece(new Knight(board, this, row, 6));
       this.addPiece(new Rook(board, this, row, 7));
    }

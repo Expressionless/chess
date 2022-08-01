@@ -72,6 +72,6 @@ public abstract class Piece {
    }
    
    public boolean canCapture(Piece other) {
-     
+    return false; 
    }
 }
