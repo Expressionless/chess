@@ -30,9 +30,8 @@ public class Tile {
    }
    
    public void highlightTile(Color col) {
-      noFill();
-      stroke(color(col.red, col.green, col.blue));
-      rect(screenPos.x + TILE_SIZE / 4, screenPos.y + TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
+      fill(col.red, col.green, col.blue, col.alpha);
+      ellipse(screenPos.x + TILE_SIZE / 2, screenPos.y + TILE_SIZE / 2, 24, 24);
    }
    
    public void highlightTile() {
@@ -43,8 +42,20 @@ public class Tile {
       return Float.toString(boardPos.x) + ", " + Float.toString(boardPos.y); 
    }
    
+   public boolean hasPiece(PieceColour colour) {
+      if(this.currentPiece != null) {
+         return this.currentPiece.getColour() == colour; 
+      }
+      
+      return false;
+   }
+   
    public boolean hasPiece() {
-     return this.currentPiece != null;
+     if(this.currentPiece != null) {
+       return hasPiece(PieceColour.WHITE) || hasPiece(PieceColour.BLACK);
+     }
+     
+     return false;
    }
    
    public boolean equals(Tile other) {

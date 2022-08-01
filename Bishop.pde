@@ -6,4 +6,9 @@ public class Bishop extends Piece {
    public void calculateValidMoves(List<Tile> tiles) {
    
    }
+   
+   
+   protected void calculateCaptureMoves(List<Tile> tiles) {
+     
+   }
 }

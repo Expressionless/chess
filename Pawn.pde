@@ -6,33 +6,41 @@ public class Pawn extends Piece {
    public Pawn(Board board, Player player, int row, int column) {
      super(board, player, "pawn", board.pieceSprites.get(player.pieceColour.colour + "_pawn"), row, column);
    }
+   
+   
+   protected void calculateCaptureMoves(List<Tile> tiles) {
+     Point boardPos = currentTile.boardPos.clone();
+     Tile tile;
+     int direction = getColour() == PieceColour.WHITE ? -1 : 1;
+     
+     if(boardPos.x < 7) {
+       tile = board.tiles[(int)boardPos.y + direction][(int)boardPos.x + 1];
+       if(tile.hasPiece(player.oppositeColour())) {
+         validMoves.add(createMove(tile));
+       }
+     }
+      
+     if(boardPos.x > 0) {
+       tile = board.tiles[(int)boardPos.y + direction][(int)boardPos.x - 1];
+       if(tile.hasPiece(player.oppositeColour())) {
+         validMoves.add(createMove(tile));
+       }
+     }
+   }
   
    public void calculateValidMoves(List<Tile> tiles) {
      validMoves.clear();
      Point boardPos = currentTile.boardPos.clone();
      Tile tile, tile2;
-     switch(getColour()) {
-        case WHITE:
-          tile = board.tiles[(int)boardPos.y - 1][(int)boardPos.x];
-          validMoves.add(createMove(tile));
-          if(!alreadyMoved) {
-            tile2 = board.tiles[(int)boardPos.y - 2][(int)boardPos.x];
-            validMoves.add(createMove(tile2));
-          }
-        break;
-        
-        case BLACK:
-        
-          tile = board.tiles[(int)boardPos.y + 1][(int)boardPos.x];
-          validMoves.add(createMove(tile));
-          if(!alreadyMoved) {
-            tile2 = board.tiles[(int)boardPos.y + 2][(int)boardPos.x];
-            validMoves.add(createMove(tile2));
-          }
-        break;
+     
+     int direction = getColour() == PieceColour.WHITE ? -1 : 1;
+     tile = board.tiles[(int)boardPos.y + direction][(int)boardPos.x];
+     validMoves.add(createMove(tile));
+     
+     if(!alreadyMoved) {
+       tile2 = board.tiles[(int)boardPos.y + 2 * direction][(int)boardPos.x];
+       validMoves.add(createMove(tile2));
      }
-     // look at current tile
-     // look at two spaces in front / behind (colour depending)
    }
    
    @Override

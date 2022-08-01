@@ -28,6 +28,7 @@ public abstract class Piece {
    }
    
    protected abstract void calculateValidMoves(List<Tile> tiles);
+   protected abstract void calculateCaptureMoves(List<Tile> tiles);
    
    public void calculateValidPieceMoves(List<Tile> tiles) {
       calculateValidMoves(tiles);

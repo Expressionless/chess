@@ -6,4 +6,9 @@ public class Queen extends Piece {
    public void calculateValidMoves(List<Tile> tiles) {
    
    }
+   
+   
+   protected void calculateCaptureMoves(List<Tile> tiles) {
+     
+   }
 }

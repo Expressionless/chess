@@ -1,4 +1,5 @@
 public class MouseHandler {
+  public final Color CURSOR_COLOR = new Color(100, 100, 100, 200);
   
   public Point screenPos;
   public Board board;
@@ -47,15 +48,20 @@ public class MouseHandler {
     Move move = new Move(this.pickedUpTile, this.currentTile);
     if(this.currentPiece.moveIsValid(move)) {
           this.currentPiece.move(move);
+          Piece otherPiece = this.currentTile.currentPiece;
+          
+          // capture other piece
+          if(otherPiece != null) {
+            this.board.removePiece(otherPiece);
+          }
           this.currentTile.currentPiece = currentPiece;
           this.currentPiece.currentTile = this.currentTile;
           
           this.currentPiece = null;
-          if(movedPiece())
+          if(movedPiece()) {
             this.board.endMove();
+          }
           this.pickedUpTile = null;
-    } else {
-       System.out.println("Invalid Move!"); 
     }
   }
   
@@ -73,12 +79,12 @@ public class MouseHandler {
   }
   
   public void render() {
-    fill(100, 100, 100, 100);
-    ellipse(currentTile.screenPos.x + 32, currentTile.screenPos.y + 32, 24, 24);
+    fill(CURSOR_COLOR.red, CURSOR_COLOR.green, CURSOR_COLOR.blue, CURSOR_COLOR.alpha);
+    if(currentTile != null) ellipse(currentTile.screenPos.x + 32, currentTile.screenPos.y + 32, 24, 24);
      if(this.currentPiece != null) {
        currentPiece.validMoves.stream().forEach(move -> {
-          move.to.highlightTile();
-       }); 
+          move.to.highlightTile(new Color(100, 100, 100, 200));
+       });
      }
   }
   

@@ -53,19 +53,18 @@ public class Board {
      textSize(24);
      for(int row = 0; row < TILE_COUNT_Y; row++) {
        fill(COL_WHITE.red, COL_WHITE.green, COL_WHITE.blue);
-       text(row, xOffset / 2, yOffset / 4 + (row + 1) * TILE_SIZE);
-        for(int column = 0; column < TILE_COUNT_X; column++) {
-           tiles[column][row].drawTile();
-        }
+       text((row + 1), xOffset / 2, yOffset / 4 + (TILE_COUNT_Y - row) * TILE_SIZE);
+       for(int column = 0; column < TILE_COUNT_X; column++) {
+          tiles[column][row].drawTile();
+       }
      }
      
      for(int column = 0; column < TILE_COUNT_X; column++) {
-        
-       fill(COL_WHITE.red, COL_WHITE.green, COL_WHITE.blue); 
+       fill(COL_WHITE.red, COL_WHITE.green, COL_WHITE.blue);
        text(COLUMN[column], (column + 1) * TILE_SIZE, TILE_SIZE * (TILE_COUNT_Y + 1) + yOffset / 4);
      }
      
-     playerWhite.pieces.stream().forEach((piece) -> piece.drawPiece());     
+     playerWhite.pieces.stream().forEach((piece) -> piece.drawPiece());
      playerBlack.pieces.stream().forEach((piece) -> piece.drawPiece());
    }
    
@@ -73,13 +72,20 @@ public class Board {
        pieceSprites.put(colour + "_" + name, loadImage(colour + "/" + name + ".png"));
    }
    
-   public Tile getTileAt(float xx, float yy) {
-      int x = ceil((xx - xOffset) / TILE_SIZE) - 1;
-      int y = ceil((yy - yOffset) / TILE_SIZE) - 1;
-      if(x <= 0) x = 0;
-      if(y <= 0) y = 0;
-      if(x >= 8) x = 7;
-      if(y >= 8) y = 7;
+   public boolean removePiece(Piece piece) {
+       piece.currentTile.currentPiece = null;
+       return piece.player.removePiece(piece);
+   }
+   
+   public Tile getTileAt(float fX, float fY) {
+      fX -= xOffset;
+      fY -= yOffset;
+      int x = floor(((fX / 64) % 64));
+      int y = floor(((fY / 64) % 64));
+      if(x < 0) return null;
+      if(y < 0) return null;
+      if(x >= 8) return null;
+      if(y >= 8) return null;
       return tiles[y][x];
    }
    
@@ -91,25 +97,27 @@ public class Board {
      
       // Calculate all valid moves for pieces
       for(Piece piece : playerWhite.pieces) {
-         piece.calculateValidMoves(tileList); 
+         piece.calculateValidMoves(tileList);
+         piece.calculateCaptureMoves(tileList);
       }
       
       for(Piece piece : playerBlack.pieces) {
-         piece.calculateValidMoves(tileList); 
+         piece.calculateValidMoves(tileList);
+         piece.calculateCaptureMoves(tileList);
       }
    }
    
    public void endMove() { 
      updatePieceMoves();
       
-      switch(this.currentPlayer.pieceColour) {
-         case WHITE:
-           this.currentPlayer = this.playerBlack;
-         break;
-         case BLACK:
-           this.currentPlayer = this.playerWhite;
-         break;
-      }
+     switch(this.currentPlayer.pieceColour) {
+        case WHITE:
+          this.currentPlayer = this.playerBlack;
+        break;
+        case BLACK:
+          this.currentPlayer = this.playerWhite;
+        break;
+     }
    }
    
    public Player getPlayer(PieceColour colour) {

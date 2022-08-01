@@ -6,6 +6,12 @@ public class Move {
      this.to = to;
    }
    
+   public boolean isCaptureMove() {
+     if(to.currentPiece != null)
+      return from.currentPiece.getColour() != to.currentPiece.getColour();
+     return false;
+   }
+   
    public boolean equals(Move move) {
       if(!move.to.equals(to))
         return false;

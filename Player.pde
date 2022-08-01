@@ -14,6 +14,13 @@ public class Player {
      pieces.add(piece);
    }
    
+   public boolean removePiece(Piece piece) {
+     int index = pieces.indexOf(piece);
+     if(index == -1) return false;
+     pieces.remove(index);
+     return true;
+   }
+   
    public void generatePieces() {
       // generate pawns
       int row = (pieceColour == PieceColour.WHITE) ? 6 : 1;
@@ -37,5 +44,15 @@ public class Player {
      
       return this.pieceColour == piece.getColour()
           && board.currentPlayer.equals(this); 
+   }
+   
+   public PieceColour oppositeColour() {
+     switch(pieceColour) {
+       case WHITE:
+         return PieceColour.BLACK;
+       case BLACK: 
+       default: 
+         return PieceColour.WHITE;
+     }
    }
 }
