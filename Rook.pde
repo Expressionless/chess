@@ -1,9 +1,9 @@
 public class Rook extends Piece {
-   public Rook(Board board, PieceColour col, int row, int column) {
-     super(board, col, "rook", board.pieceSprites.get(col.colour + "_rook"), row, column);
+   public Rook(Board board, Player player, int row, int column) {
+     super(board, player, "rook", board.pieceSprites.get(player.pieceColour.colour + "_rook"), row, column);
    }
    
-   public List<Move> validMoves() {
-     return null;
+   public void calculateValidMoves(List<Tile> tiles) {
+     
    }
 }

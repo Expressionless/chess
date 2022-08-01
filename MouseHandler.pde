@@ -2,7 +2,7 @@ public class MouseHandler {
   
   public Point screenPos;
   public Board board;
-  public Tile currentTile;
+  public Tile pickedUpTile, currentTile;
   public Piece currentPiece;
   
   public MouseHandler(Board board, float x, float y) {
@@ -26,19 +26,37 @@ public class MouseHandler {
        
      if(!this.currentTile.hasPiece()) {
        // place the piece
-       this.currentTile.currentPiece = currentPiece;
-       this.currentPiece = null;
+       placePieceHelper();
      } else {
        // Can't do
-       if(this.currentTile.currentPiece.col == board.currentPlayer.pieceColour)
+       if(this.currentTile.currentPiece.getColour() == board.currentPlayer.pieceColour)
          return;
        else {
-          this.currentTile.currentPiece = currentPiece;
-          this.currentPiece = null;
-          
+          placePieceHelper();
           //TODO: implement capture logic
        }
      }
+     
+  }
+  
+  public boolean movedPiece() {
+     return !this.currentTile.equals(this.pickedUpTile); 
+  }
+  
+  private void placePieceHelper() {
+    Move move = new Move(this.pickedUpTile, this.currentTile);
+    if(this.currentPiece.moveIsValid(move)) {
+          this.currentPiece.move(move);
+          this.currentTile.currentPiece = currentPiece;
+          this.currentPiece.currentTile = this.currentTile;
+          
+          this.currentPiece = null;
+          if(movedPiece())
+            this.board.endMove();
+          this.pickedUpTile = null;
+    } else {
+       System.out.println("Invalid Move!"); 
+    }
   }
   
   public void updatePosition(float x, float y) {
@@ -48,8 +66,8 @@ public class MouseHandler {
     screenPos.x = x;
     screenPos.y = y;
     if(currentPiece != null) {
-       currentPiece.screenPos.x = screenPos.x;
-       currentPiece.screenPos.y = screenPos.y;
+       currentPiece.screenPos.x = screenPos.x - 32;
+       currentPiece.screenPos.y = screenPos.y - 32;
     }
     currentTile = board.getTileAt(x, y);
   }
@@ -57,11 +75,14 @@ public class MouseHandler {
   public void render() {
     fill(255, 0, 0);
     ellipse(currentTile.screenPos.x + 32, currentTile.screenPos.y + 32, 24, 24);
+     if(this.currentPiece != null) {
+       currentPiece.validMoves.stream().forEach(move -> {
+          move.to.highlightTile();
+       }); 
+     }
   }
   
   public void pickupPieceFromTile() {
-    System.out.println("Tile: " + mouseHandler.currentTile.getCoordsString());
-    System.out.println("Piece: " + mouseHandler.currentTile.currentPiece.pieceName);
      pickupPieceFromTile(mouseHandler.currentTile); 
   }
   
@@ -78,6 +99,7 @@ public class MouseHandler {
        return;
        
     Tile tile = piece.currentTile;
+    this.pickedUpTile = tile;
     tile.currentPiece = null;
     piece.currentTile = null;
     currentPiece = piece;

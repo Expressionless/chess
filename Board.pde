@@ -13,6 +13,7 @@ public class Board {
    public Map<String, PImage> pieceSprites = new HashMap<>();
    
    public Tile[][] tiles = new Tile[TILE_COUNT_Y][TILE_COUNT_X]; // rows of columns
+   public List<Tile> tileList = new ArrayList<>();
    
    public Player playerWhite, playerBlack;
    
@@ -35,12 +36,15 @@ public class Board {
      
      for(int row = 0; row < TILE_COUNT_Y; row++) {
         for(int column = 0; column < TILE_COUNT_X; column++) {
-           tiles[column][row] = new Tile(row, column, xOffset, yOffset); 
+           tiles[column][row] = new Tile(row, column, xOffset, yOffset);
+           tileList.add(tiles[column][row]);
         }
      }
    
      playerWhite.generatePieces();
      playerBlack.generatePieces();
+     
+     updatePieceMoves();
    }
    
    public void drawBoard() {
@@ -72,10 +76,39 @@ public class Board {
      return getTileAt(pos.x, pos.y);
    }
    
-   public void placePiece(Piece piece, Tile tile) {
-     if(tile.currentPiece != null) return;
+   public void updatePieceMoves() {
      
-       tile.currentPiece = piece;
-       piece.currentTile = tile;
+      // Calculate all valid moves for pieces
+      for(Piece piece : playerWhite.pieces) {
+         piece.calculateValidMoves(tileList); 
+      }
+      
+      for(Piece piece : playerBlack.pieces) {
+         piece.calculateValidMoves(tileList); 
+      }
+   }
+   
+   public void endMove() { 
+     updatePieceMoves();
+      
+      switch(this.currentPlayer.pieceColour) {
+         case WHITE:
+           this.currentPlayer = this.playerBlack;
+         break;
+         case BLACK:
+           this.currentPlayer = this.playerWhite;
+         break;
+      }
+   }
+   
+   public Player getPlayer(PieceColour colour) {
+      switch (colour) {
+         case WHITE:
+         return playerWhite;
+         case BLACK:
+         return playerBlack;
+         default:
+         return null;
+      }
    }
 }

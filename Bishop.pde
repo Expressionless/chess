@@ -1,9 +1,9 @@
 public class Bishop extends Piece {
-   public Bishop(Board board, PieceColour col, int row, int column) {
-     super(board, col, "bishop", board.pieceSprites.get(col.colour + "_bishop"), row, column);
+   public Bishop(Board board, Player player, int row, int column) {
+     super(board, player, "bishop", board.pieceSprites.get(player.pieceColour.colour + "_bishop"), row, column);
    }
+  
+   public void calculateValidMoves(List<Tile> tiles) {
    
-   public List<Move> validMoves() {
-     return null;
    }
 }

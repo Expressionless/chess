@@ -1,9 +1,9 @@
 public class Knight extends Piece {
-   public Knight(Board board, PieceColour col, int row, int column) {
-     super(board, col, "knight", board.pieceSprites.get(col.colour + "_knight"), row, column);
+   public Knight(Board board, Player player, int row, int column) {
+     super(board, player, "knight", board.pieceSprites.get(player.pieceColour.colour + "_knight"), row, column);
    }
+  
+   public void calculateValidMoves(List<Tile> tiles) {
    
-   public List<Move> validMoves() {
-     return null;
    }
 }

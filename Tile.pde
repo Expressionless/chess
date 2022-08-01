@@ -32,7 +32,7 @@ public class Tile {
    public void highlightTile(Color col) {
       noFill();
       stroke(color(col.red, col.green, col.blue));
-      rect(screenPos.x, screenPos.y, TILE_SIZE, TILE_SIZE);
+      rect(screenPos.x + TILE_SIZE / 4, screenPos.y + TILE_SIZE / 4, TILE_SIZE / 2, TILE_SIZE / 2);
    }
    
    public void highlightTile() {
@@ -45,5 +45,9 @@ public class Tile {
    
    public boolean hasPiece() {
      return this.currentPiece != null;
+   }
+   
+   public boolean equals(Tile other) {
+      return other.boardPos.equals(boardPos); 
    }
 }

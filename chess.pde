@@ -27,17 +27,10 @@ void draw() {
 }
 
 void mousePressed() {
-  if(!mouseHandler.hasPiece())
-    mouseHandler.pickupPieceFromTile();
+  if(!mouseHandler.hasPiece()) {
+    if(mouseHandler.currentTile.hasPiece())
+      mouseHandler.pickupPieceFromTile();
+  }
   else
     mouseHandler.placePiece();
 }
-
-//void mouseDragged() {
-//  System.out.println("tick");
-//  mouseHandler.updatePosition(mouseX, mouseY);
-//}
-
-//void mouseReleased() {
-//  System.out.println("tick");
-//}

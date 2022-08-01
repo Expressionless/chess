@@ -11,8 +11,6 @@ public class Player {
    }
    
    public void addPiece(Piece piece) {
-     if(piece.col != pieceColour)
-       return;
      pieces.add(piece);
    }
    
@@ -21,23 +19,23 @@ public class Player {
       int row = (pieceColour == PieceColour.WHITE) ? 6 : 1;
       
       for(int column = 0; column < 8; column++) {
-         this.addPiece(new Pawn(board, pieceColour, row, column));
+         this.addPiece(new Pawn(board, this, row, column));
       }
       row = (pieceColour == PieceColour.WHITE) ? 7 : 0;
-      this.addPiece(new Rook(board, pieceColour, row, 0));
-      this.addPiece(new Knight(board, pieceColour, row, 1));
-      this.addPiece(new Bishop(board, pieceColour, row, 2));
-      this.addPiece(new Queen(board, pieceColour, row, 3));
-      this.addPiece(new King(board, pieceColour, row, 4));
-      this.addPiece(new Knight(board, pieceColour, row, 5));
-      this.addPiece(new Knight(board, pieceColour, row, 6));
-      this.addPiece(new Rook(board, pieceColour, row, 7));
+      this.addPiece(new Rook(board, this, row, 0));
+      this.addPiece(new Knight(board, this, row, 1));
+      this.addPiece(new Bishop(board, this, row, 2));
+      this.addPiece(new Queen(board, this, row, 3));
+      this.addPiece(new King(board, this, row, 4));
+      this.addPiece(new Knight(board, this, row, 5));
+      this.addPiece(new Knight(board, this, row, 6));
+      this.addPiece(new Rook(board, this, row, 7));
    }
    
    public boolean canMovePiece(Piece piece) {
      if(piece == null) return false;
      
-      return this.pieceColour == piece.col
+      return this.pieceColour == piece.getColour()
           && board.currentPlayer.equals(this); 
    }
 }

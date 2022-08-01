@@ -1,9 +1,9 @@
 public class Queen extends Piece {
-   public Queen(Board board, PieceColour col, int row, int column) {
-     super(board, col, "queen", board.pieceSprites.get(col.colour + "_queen"), row, column);
+   public Queen(Board board, Player player, int row, int column) {
+     super(board, player, "queen", board.pieceSprites.get(player.pieceColour.colour + "_queen"), row, column);
    }
+  
+   public void calculateValidMoves(List<Tile> tiles) {
    
-   public List<Move> validMoves() {
-     return null;
    }
 }
