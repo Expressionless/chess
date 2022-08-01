@@ -14,7 +14,7 @@ public class MouseHandler {
     this.board = board;
     this.screenPos = pos;
     
-    this.currentTile = board.getTileAt(pos);
+    this.currentTile = board.getTileAtScreen(pos);
   }
   
   public MouseHandler(Board board) {
@@ -45,7 +45,7 @@ public class MouseHandler {
   }
   
   private void placePieceHelper() {
-    Move move = new Move(this.pickedUpTile, this.currentTile);
+    Move move = new Move(this.currentPiece, this.pickedUpTile, this.currentTile);
     if(this.currentPiece.moveIsValid(move)) {
           this.currentPiece.move(move);
           Piece otherPiece = this.currentTile.currentPiece;
@@ -75,7 +75,7 @@ public class MouseHandler {
        currentPiece.screenPos.x = screenPos.x - 32;
        currentPiece.screenPos.y = screenPos.y - 32;
     }
-    currentTile = board.getTileAt(x, y);
+    currentTile = board.getTileAtScreen(x, y);
   }
   
   public void render() {

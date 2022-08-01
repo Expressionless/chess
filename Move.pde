@@ -1,14 +1,38 @@
 public class Move {
    public final Tile from, to;
    
-   public Move(Tile from, Tile to) {
+   private boolean captureMove;
+   private Piece movingPiece;
+   
+   public Move(Piece movingPiece, Tile from, Tile to) {
+      this(movingPiece, from, to, false);
+      captureMove = calcCaptureMove();
+   }
+   
+   public Move(Piece movingPiece, Tile from, Tile to, boolean isCaptureMove) {
+     this.movingPiece = movingPiece;
      this.from = from;
      this.to = to;
+     this.captureMove = isCaptureMove;
+     if(this.captureMove)
+     System.out.println("Creating move: " + captureMove);
    }
    
    public boolean isCaptureMove() {
-     if(to.currentPiece != null)
-      return from.currentPiece.getColour() != to.currentPiece.getColour();
+      return captureMove;
+   }
+   
+   private boolean calcCaptureMove() {
+     if(to.currentPiece != null) {
+      if(movingPiece.getColour() != to.currentPiece.getColour()) {
+         return movingPiece.validMoves.stream().anyMatch(move -> {
+           if(move.isCaptureMove()) {
+              return move.equals(this); 
+           }
+           return false;
+         });
+      }
+     }
      return false;
    }
    

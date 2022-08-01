@@ -77,11 +77,7 @@ public class Board {
        return piece.player.removePiece(piece);
    }
    
-   public Tile getTileAt(float fX, float fY) {
-      fX -= xOffset;
-      fY -= yOffset;
-      int x = floor(((fX / 64) % 64));
-      int y = floor(((fY / 64) % 64));
+   public Tile getTileAt(int x, int y) {
       if(x < 0) return null;
       if(y < 0) return null;
       if(x >= 8) return null;
@@ -89,8 +85,16 @@ public class Board {
       return tiles[y][x];
    }
    
-   public Tile getTileAt(Point pos) {
-     return getTileAt(pos.x, pos.y);
+   public Tile getTileAtScreen(float fX, float fY) {
+      fX -= xOffset;
+      fY -= yOffset;
+      int x = floor((fX / 64) % 64);
+      int y = floor((fY / 64) % 64);
+      return getTileAt(x, y);
+   }
+   
+   public Tile getTileAtScreen(Point pos) {
+     return getTileAtScreen(pos.x, pos.y);
    }
    
    public void updatePieceMoves() {

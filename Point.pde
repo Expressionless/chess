@@ -1,3 +1,6 @@
+
+String[] COLUMN = {"A", "B", "C", "D", "E", "F", "G", "H"};
+
 public class Point {
    public float x, y;
    
@@ -12,5 +15,20 @@ public class Point {
    
    public boolean equals(Point other) {
       return this.x == other.x && this.y == other.y; 
+   }
+   
+   public String toString() {
+     return toString(true);
+   }
+   
+   public String toString(boolean chess) {
+     //try {
+     if(chess) {
+       return COLUMN[(int)x] + Integer.toString((int)(8 - y));
+     } else return Float.toString(x) + ", " + Float.toString(y);
+     //} catch(ArrayIndexOutOfBoundsException e) {
+     //   e.printStackTrace(); 
+     //   return "";
+     //}
    }
 }

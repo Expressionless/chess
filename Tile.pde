@@ -39,7 +39,7 @@ public class Tile {
    }
    
    public String getCoordsString() {
-      return Float.toString(boardPos.x) + ", " + Float.toString(boardPos.y); 
+      return boardPos.toString(); 
    }
    
    public boolean hasPiece(PieceColour colour) {

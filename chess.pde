@@ -29,10 +29,12 @@ void draw() {
 }
 
 void mousePressed() {
-  if(!mouseHandler.hasPiece()) {
-    if(mouseHandler.currentTile.hasPiece())
-      mouseHandler.pickupPieceFromTile();
+  if(mouseHandler.currentTile != null) {
+    if(!mouseHandler.hasPiece()) {
+      if(mouseHandler.currentTile.hasPiece())
+        mouseHandler.pickupPieceFromTile();
+    }
+    else
+      mouseHandler.placePiece();
   }
-  else
-    mouseHandler.placePiece();
 }

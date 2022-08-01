@@ -50,6 +50,22 @@ public abstract class Piece {
    
    public boolean moveIsValid(Move move) {
      if(move.from.equals(move.to)) return true;
+     
+     // if there is a piece on the to tile that is not the same colour and move is a capture move
+     // capture it
+     // otherwise don't bother checking if its a valid move
+     if(move.to.currentPiece != null) {
+        if(move.isCaptureMove()) {
+          if(move.to.currentPiece.getColour() == move.movingPiece.getColour()) {
+            System.out.println("Same colour!");
+            return false;
+          }
+        } else {
+          System.out.println("Not capture move!");
+          return false;
+        }
+     }
+     
       boolean isValid = validMoves.stream().anyMatch(validMove -> {
         return (validMove.equals(move));
       });
@@ -64,8 +80,8 @@ public abstract class Piece {
      return player.pieceColour;
    }
    
-   public Move createMove(Tile to) {
-      return new Move(currentTile, to); 
+   public Move createMove(Tile to, boolean isCapture) {
+     return new Move(this, currentTile, to, isCapture);
    }
    
    public void move(Move move) {
