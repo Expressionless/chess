@@ -31,4 +31,20 @@ public class Point {
      //   return "";
      //}
    }
+   
+   public Point add(float x, float y) {
+      return new Point(this.x + x, this.y + y); 
+   }
+   
+   public Point add(Point p) {
+      return add(p.x, p.y); 
+   }
+   
+   public Point sub(float x, float y) {
+      return add(-x, -y); 
+   }
+   
+   public Point sub(Point p) {
+      return sub(-p.x, -p.y); 
+   }
 }

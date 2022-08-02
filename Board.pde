@@ -97,6 +97,10 @@ public class Board {
      return getTileAtScreen(pos.x, pos.y);
    }
    
+   public Tile getTileAt(Point boardPos) {
+     return getTileAt((int)boardPos.x, (int)boardPos.y);
+   }
+   
    public void updatePieceMoves() {
      playerWhite.updatePieces(tileList);
      playerBlack.updatePieces(tileList);
@@ -113,6 +117,11 @@ public class Board {
           this.currentPlayer = this.playerWhite;
         break;
      }
+     
+     boolean blackInCheck = kingInCheck(PieceColour.BLACK);
+     boolean whiteInCheck = kingInCheck(PieceColour.WHITE);
+     if(blackInCheck) System.out.println("BLACK IN CHECK");
+     if(whiteInCheck) System.out.println("WHITE IN CHECK");
    }
    
    public Player getPlayer(PieceColour colour) {
@@ -124,5 +133,32 @@ public class Board {
          default:
          return null;
       }
+   }
+   
+   public Player getOppositePlayer(PieceColour colour) {
+      switch (colour) {
+         case WHITE:
+         return playerBlack;
+         case BLACK:
+         return playerWhite;
+         default:
+         return null;
+      }
+   }
+   
+   public boolean kingInCheck(PieceColour pColour) {
+     // Check all valid moves to see if any "to" tiles contain a king piece. Return that colour if so
+     boolean check = getOppositePlayer(pColour).pieces.stream().anyMatch(piece -> {
+         return piece.validMoves.stream().anyMatch(move -> {
+           if(move.to.currentPiece == null) return false;
+           if(move.to.currentPiece.getColour() == pColour) {
+               return (move.to.currentPiece instanceof King);
+           }
+           
+           return false;
+         });
+     });
+     
+     return check;
    }
 }

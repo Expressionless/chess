@@ -4,7 +4,16 @@ public class Queen extends Piece {
    }
   
    public void calculateValidMoves(List<Tile> tiles) {
-   
+     validMoves.clear();
+     validMoves.addAll(getStraight(1, 1));
+     validMoves.addAll(getStraight(1, -1));
+     validMoves.addAll(getStraight(-1, -1));
+     validMoves.addAll(getStraight(-1, 1));
+     
+     validMoves.addAll(getStraight(1, 0));
+     validMoves.addAll(getStraight(0, 1));
+     validMoves.addAll(getStraight(-1, 0));
+     validMoves.addAll(getStraight(0, -1));
    }
    
    

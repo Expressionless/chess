@@ -16,6 +16,49 @@ public abstract class Piece {
       this(board, player, pieceName, pieceImage, board.tiles[row][column]); 
    }
    
+   
+   protected boolean addMove(List<Move> moves, Tile tile) {
+     Move move;
+     
+     if(tile == null) return false;
+     if(tile.currentPiece != null) {
+         if(tile.currentPiece.sameTeam(this)) return false;
+     }
+     
+     move = createMove(tile, tile.currentPiece);
+     return addMove(moves, move);
+   }
+   
+   protected boolean addMove(List<Move> moves, Move move) {
+     if(move == null) return false;
+     moves.add(move);
+     return true;
+   }
+   
+   protected List<Move> getStraight(int x, int y) {
+     List<Move> moves = new ArrayList<>();
+     Tile nextTile = currentTile;
+     
+     // Top right direction
+     while(nextTile != null) {
+         // Decide if capture move or not
+         if(nextTile.currentPiece != null) {
+           if(!nextTile.currentPiece.equals(this)) {
+             if(!nextTile.currentPiece.sameTeam(this)) {
+               addMove(moves, createMove(nextTile, nextTile.currentPiece));
+             }
+               break;
+           }
+         } else {
+           moves.add(createMove(nextTile, null));
+         }
+         Point nextPos = nextTile.boardPos.add(new Point(x, y));
+         nextTile = board.getTileAt(nextPos);
+     }
+     
+     return moves;
+   }
+   
    public Piece(Board board, Player player, String pieceName, PImage pieceImage, Tile currentTile) {
       this.pieceImage = pieceImage;
       this.board = board;
@@ -31,6 +74,7 @@ public abstract class Piece {
    protected abstract void calculateCaptureMoves(List<Tile> tiles);
    
    public void calculateValidPieceMoves(List<Tile> tiles) {
+     validMoves.clear();
       calculateValidMoves(tiles);
    }
    

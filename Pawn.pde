@@ -42,7 +42,7 @@ public class Pawn extends Piece {
      Point boardPos = currentTile.boardPos.clone();
      Tile tile;
      int direction = getDirection();
-     calculateEnPassant(boardPos, direction).stream().forEach(move -> validMoves.add(move));
+     calculateEnPassant(boardPos, direction).stream().forEach(move -> addMove(validMoves, move));
      
      if(boardPos.x < 7) {
        // En passant
@@ -51,7 +51,7 @@ public class Pawn extends Piece {
        tile = board.getTileAt((int)boardPos.x + 1, (int)boardPos.y + direction);
        if(tile != null) {
          if(tile.hasPiece(player.oppositeColour())) {
-           validMoves.add(createMove(tile, tile.currentPiece));
+           addMove(validMoves, createMove(tile, tile.currentPiece));
          }
        }
      }
@@ -60,7 +60,7 @@ public class Pawn extends Piece {
        tile = board.getTileAt((int)boardPos.x - 1, (int)boardPos.y + direction);
        if(tile != null) {
          if(tile.hasPiece(player.oppositeColour())) {
-           validMoves.add(createMove(tile, tile.currentPiece));
+           addMove(validMoves, createMove(tile, tile.currentPiece));
          }
        }
      } 
@@ -82,13 +82,19 @@ public class Pawn extends Piece {
      int direction = getColour() == PieceColour.WHITE ? -1 : 1;
      tile = board.getTileAt((int)boardPos.x, (int)boardPos.y + direction);
      
-     if(tile != null)
-       validMoves.add(createMove(tile, null));
+     if(tile != null) {
+       if(tile.currentPiece == null) {
+           addMove(validMoves, createMove(tile, null));
+       } else return;
+     }
      
      if(!alreadyMoved) {
        tile = board.getTileAt((int)boardPos.x, (int)boardPos.y + 2 * direction);
-       if(tile != null)
-         validMoves.add(createMove(tile, null));
+       if(tile != null) {
+         if(tile.currentPiece == null) {
+           addMove(validMoves, createMove(tile, null));
+         }
+       }
      }
    }
    

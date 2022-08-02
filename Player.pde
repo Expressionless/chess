@@ -44,14 +44,14 @@ public class Player {
          this.addPiece(new Pawn(board, this, row, column));
       }
       row = (pieceColour == PieceColour.WHITE) ? 7 : 0;
-      //this.addPiece(new Rook(board, this, row, 0));
-      //this.addPiece(new Knight(board, this, row, 1));
-      //this.addPiece(new Bishop(board, this, row, 2));
-      //this.addPiece(new Queen(board, this, row, 3));
-      //this.addPiece(new King(board, this, row, 4));
-      //this.addPiece(new Bishop(board, this, row, 5));
-      //this.addPiece(new Knight(board, this, row, 6));
-      //this.addPiece(new Rook(board, this, row, 7));
+      this.addPiece(new Rook(board, this, row, 0));
+      this.addPiece(new Knight(board, this, row, 1));
+      this.addPiece(new Bishop(board, this, row, 2));
+      this.addPiece(new Queen(board, this, row, 3));
+      this.addPiece(new King(board, this, row, 4));
+      this.addPiece(new Bishop(board, this, row, 5));
+      this.addPiece(new Knight(board, this, row, 6));
+      this.addPiece(new Rook(board, this, row, 7));
    }
    
    public boolean canMovePiece(Piece piece) {

@@ -1,9 +1,9 @@
 public class Move {
    public final Tile from, to;
    
-   private boolean captureMove;
    private Piece movingPiece;
-   private Piece capturePiece;
+   private Piece capturePiece = null;
+   private boolean captureMove = false;
    
    public Move(Piece movingPiece, Tile from, Tile to) {
       this(movingPiece, from, to, null);
@@ -12,11 +12,13 @@ public class Move {
    }
    
    public Move(Piece movingPiece, Tile from, Tile to, Piece capturePiece) {
+     if(from == null) throw new NullPointerException("From is null");
+     if(to == null) throw new NullPointerException("To is null");
      this.movingPiece = movingPiece;
      this.from = from;
      this.to = to;
-     this.captureMove = capturePiece != null;
      this.capturePiece = capturePiece;
+     this.captureMove = capturePiece != null;
    }
    
    public boolean isCaptureMove() {
