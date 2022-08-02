@@ -47,9 +47,8 @@ public class MouseHandler {
   private void placePieceHelper() {
     Move move = new Move(this.currentPiece, this.pickedUpTile, this.currentTile);
     if(this.currentPiece.moveIsValid(move)) {
-          this.currentPiece.move(move);
-          Piece otherPiece = this.currentTile.currentPiece;
-          
+          //Piece otherPiece = this.currentTile.currentPiece;
+          Piece otherPiece = move.capturePiece;
           // capture other piece
           if(otherPiece != null) {
             this.board.removePiece(otherPiece);
@@ -57,6 +56,7 @@ public class MouseHandler {
           this.currentTile.currentPiece = currentPiece;
           this.currentPiece.currentTile = this.currentTile;
           
+          this.currentPiece.postMove(move);
           this.currentPiece = null;
           if(movedPiece()) {
             this.board.endMove();

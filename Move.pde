@@ -3,37 +3,59 @@ public class Move {
    
    private boolean captureMove;
    private Piece movingPiece;
+   private Piece capturePiece;
    
    public Move(Piece movingPiece, Tile from, Tile to) {
-      this(movingPiece, from, to, false);
-      captureMove = calcCaptureMove();
+      this(movingPiece, from, to, null);
+      capturePiece = calcCaptureMove();
+      captureMove = capturePiece != null;
    }
    
-   public Move(Piece movingPiece, Tile from, Tile to, boolean isCaptureMove) {
+   public Move(Piece movingPiece, Tile from, Tile to, Piece capturePiece) {
      this.movingPiece = movingPiece;
      this.from = from;
      this.to = to;
-     this.captureMove = isCaptureMove;
-     if(this.captureMove)
-     System.out.println("Creating move: " + captureMove);
+     this.captureMove = capturePiece != null;
+     this.capturePiece = capturePiece;
    }
    
    public boolean isCaptureMove() {
       return captureMove;
    }
    
-   private boolean calcCaptureMove() {
+   private Piece calcCaptureMove() {
      if(to.currentPiece != null) {
-      if(movingPiece.getColour() != to.currentPiece.getColour()) {
-         return movingPiece.validMoves.stream().anyMatch(move -> {
+      if(!movingPiece.sameTeam(to.currentPiece)) {
+         boolean capMove = movingPiece.validMoves.stream().anyMatch(move -> {
            if(move.isCaptureMove()) {
               return move.equals(this); 
            }
            return false;
          });
+         
+         if(capMove) {
+            return to.currentPiece;           
+         }
+         
+       }
+      } else {
+         // en passant
+         if(movingPiece instanceof Pawn) {
+           // Check tiles below
+           Point toTilePos = to.boardPos;
+           int direction = ((Pawn)movingPiece).getDirection();
+           
+           Tile captureTile = board.getTileAt((int)toTilePos.x, (int)toTilePos.y - direction);
+           if(captureTile.currentPiece != null) {
+             if(captureTile.currentPiece instanceof Pawn) {
+               if(!captureTile.currentPiece.sameTeam(movingPiece)) {
+                 return captureTile.currentPiece;
+               }
+             }
+           }
+         }
       }
-     }
-     return false;
+     return null;
    }
    
    public boolean equals(Move move) {
@@ -43,6 +65,12 @@ public class Move {
         return false;
         
       return true;
+   }
+   
+   public Point getMoveDistance() {
+      float dX = to.boardPos.x - from.boardPos.x;
+      float dY = to.boardPos.y - from.boardPos.y;
+      return new Point(abs(dX), abs(dY));
    }
    
    public String toString() {

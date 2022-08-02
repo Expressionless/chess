@@ -98,17 +98,8 @@ public class Board {
    }
    
    public void updatePieceMoves() {
-     
-      // Calculate all valid moves for pieces
-      for(Piece piece : playerWhite.pieces) {
-         piece.calculateValidMoves(tileList);
-         piece.calculateCaptureMoves(tileList);
-      }
-      
-      for(Piece piece : playerBlack.pieces) {
-         piece.calculateValidMoves(tileList);
-         piece.calculateCaptureMoves(tileList);
-      }
+     playerWhite.updatePieces(tileList);
+     playerBlack.updatePieces(tileList);
    }
    
    public void endMove() { 

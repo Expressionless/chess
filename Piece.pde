@@ -42,6 +42,10 @@ public abstract class Piece {
      image(pieceImage, screenPos.x, screenPos.y);
    }
    
+   public boolean sameTeam(Piece other) {
+      return getColour() == other.getColour();
+   }
+   
    public void drawMoves() {
      for (Move move : validMoves) {
        move.to.highlightTile();
@@ -80,15 +84,19 @@ public abstract class Piece {
      return player.pieceColour;
    }
    
-   public Move createMove(Tile to, boolean isCapture) {
-     return new Move(this, currentTile, to, isCapture);
+   public Move createMove(Tile to, Piece capturePiece) {
+     return new Move(this, currentTile, to, capturePiece);
    }
    
-   public void move(Move move) {
+   public void postMove(Move move) {
      
    }
    
    public boolean canCapture(Piece other) {
     return false; 
+   }
+   
+   public String toString() {
+       return getColour().colour + " " + pieceName + (currentTile != null ? (" at " + currentTile.boardPos) : " on cursor");
    }
 }
